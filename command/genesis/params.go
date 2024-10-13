@@ -12,8 +12,7 @@ import (
 	ibft "github.com/nnlgsakib/neth/consensus/NLG-ibft"
 	"github.com/nnlgsakib/neth/consensus/NLG-ibft/fork"
 	"github.com/nnlgsakib/neth/consensus/NLG-ibft/signer"
-
-	//
+	"github.com/nnlgsakib/neth/contracts/reward"
 	"github.com/nnlgsakib/neth/contracts/staking"
 	stakingHelper "github.com/nnlgsakib/neth/helper/staking"
 	"github.com/nnlgsakib/neth/server"
@@ -427,6 +426,14 @@ func (p *genesisParams) initGenesisConfig() error {
 		chainConfig.Genesis.Alloc[staking.AddrStakingContract] = stakingAccount
 	}
 
+	// Predeploy reward contract
+	rewardAccount, err := p.predeployRewardContract()
+	if err != nil {
+		return err
+	}
+
+	chainConfig.Genesis.Alloc[reward.RewardContractAddress] = rewardAccount
+
 	for _, premineInfo := range p.premineInfos {
 		chainConfig.Genesis.Alloc[premineInfo.address] = &chain.GenesisAccount{
 			Balance: premineInfo.amount,
@@ -442,6 +449,15 @@ func (p *genesisParams) shouldPredeployStakingSC() bool {
 	// If the consensus selected is NLG-IBFT / Dev and the mechanism is Proof of Stake,
 	// deploy the Staking SC
 	return p.isPos && (p.consensus == server.IBFTConsensus || p.consensus == server.DevConsensus)
+}
+
+func (p *genesisParams) predeployRewardContract() (*chain.GenesisAccount, error) {
+	rewardAccount, err := reward.PredeployRewardContract()
+	if err != nil {
+		return nil, err
+	}
+
+	return rewardAccount, nil
 }
 
 func (p *genesisParams) predeployStakingSC() (*chain.GenesisAccount, error) {
