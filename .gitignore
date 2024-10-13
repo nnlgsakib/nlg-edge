@@ -3,3 +3,5 @@ go-ibft
 neth
 neth.exe
 data
+gen.json
+genesis.json

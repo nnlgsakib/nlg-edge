@@ -10,6 +10,7 @@ import (
 
 	"github.com/nnlgsakib/neth/chain"
 	"github.com/nnlgsakib/neth/contracts"
+	"github.com/nnlgsakib/neth/contracts/reward"
 	"github.com/nnlgsakib/neth/crypto"
 	"github.com/nnlgsakib/neth/state/runtime"
 	"github.com/nnlgsakib/neth/state/runtime/addresslist"
@@ -616,13 +617,22 @@ func (t *Transition) apply(msg *types.Transaction) (*runtime.ExecutionResult, er
 	// 		new(big.Int).Set(msg.GasTipCap),
 	// 	)
 	// }
+
 	effectiveTip := GetLondonv2Handler(uint64(t.ctx.Number)).getEffectiveTip(
 		msg, gasPrice, t.ctx.BaseFee, t.config.London,
 	)
-
-	// Pay the coinbase fee as a miner reward using the calculated effective tip.
 	coinbaseFee := new(big.Int).Mul(new(big.Int).SetUint64(result.GasUsed), effectiveTip)
-	t.state.AddBalance(t.ctx.Coinbase, coinbaseFee)
+	rewardContractAddr := reward.RewardContractAddress
+	if t.config.NLG {
+		// If NLG fork is enabled, send the fee to the reward pool contract
+		t.state.AddBalance(rewardContractAddr, coinbaseFee)
+	} else {
+		// Otherwise, send the fee to the validator's address (coinbase)
+		t.state.AddBalance(t.ctx.Coinbase, coinbaseFee)
+	}
+
+	// // Pay the coinbase fee as a miner reward using the calculated effective tip.
+	// t.state.AddBalance(t.ctx.Coinbase, coinbaseFee)
 
 	// Burn some amount if the london hardfork is applied.
 	// Basically, burn amount is just transferred to the current burn contract.
