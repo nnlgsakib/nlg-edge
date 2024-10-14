@@ -34,8 +34,8 @@ var (
 // Chain is the blockchain chain configuration
 type Chain struct {
 	Name      string   `json:"name"`
-	Genesis   *Genesis `json:"genesis"`
 	Params    *Params  `json:"params"`
+	Genesis   *Genesis `json:"genesis"`
 	Bootnodes []string `json:"bootnodes,omitempty"`
 }
 

@@ -388,17 +388,17 @@ func (p *genesisParams) initGenesisConfig() error {
 
 	chainConfig := &chain.Chain{
 		Name: p.name,
+		Params: &chain.Params{
+			ChainID: int64(p.chainID),
+			Forks:   enabledForks,
+			Engine:  p.consensusEngineConfig,
+		},
 		Genesis: &chain.Genesis{
 			GasLimit:   p.blockGasLimit,
 			Difficulty: 1,
 			Alloc:      map[types.Address]*chain.GenesisAccount{},
 			ExtraData:  p.extraData,
 			GasUsed:    command.DefaultGenesisGasUsed,
-		},
-		Params: &chain.Params{
-			ChainID: int64(p.chainID),
-			Forks:   enabledForks,
-			Engine:  p.consensusEngineConfig,
 		},
 		Bootnodes: p.bootnodes,
 	}
