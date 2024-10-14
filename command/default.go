@@ -10,6 +10,7 @@ import (
 const (
 	DefaultGenesisFileName  = "genesis.json"
 	DefaultChainName        = "neth-smart-chain"
+	DefaultBlockTime        = 3000000000
 	DefaultChainID          = 9996
 	DefaultConsensus        = server.IBFTConsensus
 	DefaultGenesisGasUsed   = 458752  // 0x70000

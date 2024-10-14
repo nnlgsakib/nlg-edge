@@ -36,11 +36,12 @@ const (
 	nativeTokenConfigFlag = "native-token-config"
 	rewardTokenCodeFlag   = "reward-token-code"
 	rewardWalletFlag      = "reward-wallet"
+	blockTimeFlag         = "block-time"
 
-	defaultNativeTokenName     = "Polygon"
-	defaultNativeTokenSymbol   = "MATIC"
-	defaultNativeTokenDecimals = uint8(18)
-	minNativeTokenParamsNumber = 4
+	// defaultNativeTokenName     = "Polygon"
+	// defaultNativeTokenSymbol   = "MATIC"
+	// defaultNativeTokenDecimals = uint8(18)
+	// minNativeTokenParamsNumber = 4
 )
 
 // Legacy flags that need to be preserved for running clients

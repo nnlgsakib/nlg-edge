@@ -185,12 +185,12 @@ func setFlags(cmd *cobra.Command) {
 	// 		"the number of block included into a sprint",
 	// 	)
 
-	// 	cmd.Flags().DurationVar(
-	// 		&params.blockTime,
-	// 		blockTimeFlag,
-	// 		defaultBlockTime,
-	// 		"the predefined period which determines block creation frequency",
-	// 	)
+	cmd.Flags().DurationVar(
+		&params.blockTime,
+		blockTimeFlag,
+		command.DefaultBlockTime,
+		"the predefined period which determines block creation frequency",
+	)
 
 	// 	cmd.Flags().Uint64Var(
 	// 		&params.epochReward,

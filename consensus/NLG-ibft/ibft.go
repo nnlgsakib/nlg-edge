@@ -24,6 +24,7 @@ import (
 
 const (
 	DefaultEpochSize = 100000
+	defaultBlockTime = 1000000
 	IbftKeyName      = "validator.key"
 	KeyEpochSize     = "epochSize"
 
