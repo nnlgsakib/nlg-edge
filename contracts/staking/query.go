@@ -19,7 +19,7 @@ const (
 
 var (
 	// staking contract address
-	AddrStakingContract = types.StringToAddress("1001")
+	AddrStakingContract = types.StringToAddress("FFff")
 
 	// Gas limit used when querying the validator set
 	queryGasLimit uint64 = 1000000

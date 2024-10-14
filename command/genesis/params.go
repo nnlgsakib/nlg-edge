@@ -12,6 +12,7 @@ import (
 	ibft "github.com/nnlgsakib/neth/consensus/NLG-ibft"
 	"github.com/nnlgsakib/neth/consensus/NLG-ibft/fork"
 	"github.com/nnlgsakib/neth/consensus/NLG-ibft/signer"
+	"github.com/nnlgsakib/neth/contracts/profile_manager"
 	"github.com/nnlgsakib/neth/contracts/reward"
 	"github.com/nnlgsakib/neth/contracts/staking"
 	stakingHelper "github.com/nnlgsakib/neth/helper/staking"
@@ -93,7 +94,7 @@ type genesisParams struct {
 
 	genesisConfig *chain.Chain
 
-	// PolyBFT
+	// // PolyBFT
 	validatorsPath       string
 	validatorsPrefixPath string
 	validators           []string
@@ -432,7 +433,20 @@ func (p *genesisParams) initGenesisConfig() error {
 		return err
 	}
 
+	// Predeploy reward contract
+	profileAccount, err := p.predeployRewardContract()
+	if err != nil {
+		return err
+	}
+
 	chainConfig.Genesis.Alloc[reward.RewardContractAddress] = rewardAccount
+
+	// Predeploy reward contract
+	profileAccount, err = p.predeployProfileContract()
+	if err != nil {
+		return err
+	}
+	chainConfig.Genesis.Alloc[profile_manager.ProfileContractAddress] = profileAccount
 
 	for _, premineInfo := range p.premineInfos {
 		chainConfig.Genesis.Alloc[premineInfo.address] = &chain.GenesisAccount{
@@ -460,6 +474,14 @@ func (p *genesisParams) predeployRewardContract() (*chain.GenesisAccount, error)
 	return rewardAccount, nil
 }
 
+func (p *genesisParams) predeployProfileContract() (*chain.GenesisAccount, error) {
+	profileAccount, err := profile_manager.PredeployProfileContract()
+	if err != nil {
+		return nil, err
+	}
+
+	return profileAccount, nil
+}
 func (p *genesisParams) predeployStakingSC() (*chain.GenesisAccount, error) {
 	stakingAccount, predeployErr := stakingHelper.PredeployStakingSC(
 		p.ibftValidators,

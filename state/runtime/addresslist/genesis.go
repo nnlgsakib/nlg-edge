@@ -21,7 +21,7 @@ func ApplyGenesisAllocs(
 		state: &genesisState{chain},
 	}
 
-	// if owner is nil nothing will be written to the storage
+	//if owner is nil nothing will be written to the storage
 	allocList.SetOwner(owner)
 
 	if config == nil {
