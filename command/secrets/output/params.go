@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	dataDirFlag   = "data-dir"
+	dataDirFlag   = "datadir"
 	configFlag    = "config"
 	validatorFlag = "validator"
 	blsFlag       = "bls"

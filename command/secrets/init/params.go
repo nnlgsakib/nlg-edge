@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	dataDirFlag = "data-dir"
+	dataDirFlag = "datadir"
 	configFlag  = "config"
 	ecdsaFlag   = "ecdsa"
 	//blsFlag                = "bls"
